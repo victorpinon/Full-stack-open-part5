@@ -69,6 +69,17 @@ const App = () => {
     showNotificationMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`, 'success')
   }
 
+  const updateBlog = (newBlog) => {
+    const newBlogs = blogs.map(b => b.id !== newBlog.id ? b : {
+      ...b,
+      title: newBlog.title,
+      author: newBlog.author,
+      likes: newBlog.likes,
+      url: newBlog.url
+    })
+    setBlogs(newBlogs)
+  }
+
   if (user === null) {
     return (
       <div>
@@ -90,7 +101,7 @@ const App = () => {
           <BlogForm createBlog={addBlog} />
         </Toggable>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
         )}
       </div>
     )
