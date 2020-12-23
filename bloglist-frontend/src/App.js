@@ -69,14 +69,21 @@ const App = () => {
     showNotificationMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`, 'success')
   }
 
-  const updateBlog = (newBlog) => {
-    const newBlogs = blogs.map(b => b.id !== newBlog.id ? b : {
+  const updateBlog = async (blogId, blogToUpdate) => {
+    const updatedBlog = await blogService.update(blogId, blogToUpdate)
+    const newBlogs = blogs.map(b => b.id !== updatedBlog.id ? b : {
       ...b,
-      title: newBlog.title,
-      author: newBlog.author,
-      likes: newBlog.likes,
-      url: newBlog.url
+      title: updatedBlog.title,
+      author: updatedBlog.author,
+      likes: updatedBlog.likes,
+      url: updatedBlog.url
     })
+    setBlogs(newBlogs)
+  }
+
+  const deleteBlog = async (blogId) => {
+    await blogService.remove(blogId)
+    const newBlogs = blogs.filter(b => b.id !== blogId)
     setBlogs(newBlogs)
   }
 
@@ -103,7 +110,7 @@ const App = () => {
         {blogs
           .sort((a,b) => (a.likes > b.likes) ? -1 : ((b.likes > a.likes) ? 1 : 0))
           .map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} canDelete={blog.user.username === user.username}/>
           )
         }
       </div>
