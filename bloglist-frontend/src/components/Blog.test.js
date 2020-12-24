@@ -1,9 +1,10 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import Blog from './Blog'
 
-test('<BlogForm /> renders the blog\'s title and author, but does not render its url or number of likes by default ', async () => {
+describe('<BlogForm />', () => {
+  let component
   const blog = {
     'likes': 6,
     'title': 'Blog1',
@@ -17,13 +18,36 @@ test('<BlogForm /> renders the blog\'s title and author, but does not render its
     'id': '5fdfa172d66ab82360a7730f'
   }
 
-  const component = render(
-    <Blog blog={blog} updateBlog={() => {}} deleteBlog={() => {}} canDelete={false} />
-  )
+  beforeEach(() => {
+    component = render(
+      <Blog blog={blog} updateBlog={() => {}} deleteBlog={() => {}} canDelete={false} />
+    )
+  })
 
-  expect(component.container.querySelector('.title')).toBeDefined()
-  expect(component.container.querySelector('.author')).toBeDefined()
+  test('Renders the blog\'s title and author, but does not render its url or number of likes by default ', async () => {
+    const title = component.container.querySelector('.title')
+    expect(title).toBeInTheDocument()
+    const author = component.container.querySelector('.author')
+    expect(author).toBeInTheDocument()
 
-  expect(component.container.querySelector('.url')).toBeDefined()
-  expect(component.container.querySelector('.likes')).toBeDefined()
+    const url = component.container.querySelector('.url')
+    expect(url).toBeNull()
+    const likes = component.container.querySelector('.likes')
+    expect(likes).toBeNull()
+  })
+
+  test('Renders the blog\'s title and author, but does not render its url or number of likes by default ', async () => {
+    const detailsButton = component.container.querySelector('.detailsButton')
+    fireEvent.click(detailsButton)
+
+    const title = component.container.querySelector('.title')
+    expect(title).toBeInTheDocument()
+    const author = component.container.querySelector('.author')
+    expect(author).toBeInTheDocument()
+
+    const url = component.container.querySelector('.url')
+    expect(url).toBeInTheDocument()
+    const likes = component.container.querySelector('.likes')
+    expect(likes).toBeInTheDocument()
+  })
 })

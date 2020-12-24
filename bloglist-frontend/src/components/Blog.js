@@ -47,7 +47,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, canDelete }) => {
       <div>
         <p className={'title'}>{blog.title}</p>
         <p className={'author'}>{blog.author}</p>
-        <button onClick={toggleDetails}>{details ? 'hide' : 'view'}</button>
+        <button className={'detailsButton'} onClick={toggleDetails}>{details ? 'hide' : 'view'}</button>
       </div>
       {details && getDetails()}
     </div>
