@@ -5,14 +5,14 @@ import Toggable from './components/Toggable'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
-import loginService from './services/login' 
+import loginService from './services/login'
 
 const App = () => {
   const blogFormRef = useRef()
 
   const [blogs, setBlogs] = useState([])
 
-  const [user, setUser] = useState(null) 
+  const [user, setUser] = useState(null)
 
   const [ messageType, setMessageType ] = useState(null)
   const [ message, setMessage ] = useState(null)
@@ -52,7 +52,7 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
-      showNotificationMessage(`wrong username or password`, 'error')
+      showNotificationMessage('wrong username or password', 'error')
     }
   }
 
@@ -62,7 +62,7 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (newBlog) => {  
+  const addBlog = async (newBlog) => {
     blogFormRef.current.toggleVisibility()
     const returnedBlog = await blogService.create(newBlog)
     setBlogs(blogs.concat(returnedBlog))
