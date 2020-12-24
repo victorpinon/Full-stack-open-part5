@@ -18,9 +18,9 @@ const Blog = ({ blog, updateBlog, deleteBlog, canDelete }) => {
 
   const getDetails = () => (
     <div>
-      <p>{blog.url}</p>
-      <p>{blog.likes}<button onClick={likeBlog}>like</button></p>
-      <p>{blog.user.name}</p>
+      <p className={'url'}>{blog.url}</p>
+      <p className={'likes'}>{blog.likes}<button onClick={likeBlog}>like</button></p>
+      <p className={'username'}>{blog.user.name}</p>
       {canDelete && <button onClick={removeBlog}>remove</button>}
     </div>
   )
@@ -43,9 +43,11 @@ const Blog = ({ blog, updateBlog, deleteBlog, canDelete }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <div>
-        {blog.title} {blog.author} <button onClick={toggleDetails}>{details ? 'hide' : 'view'}</button>
+        <p className={'title'}>{blog.title}</p>
+        <p className={'author'}>{blog.author}</p>
+        <button onClick={toggleDetails}>{details ? 'hide' : 'view'}</button>
       </div>
       {details && getDetails()}
     </div>
