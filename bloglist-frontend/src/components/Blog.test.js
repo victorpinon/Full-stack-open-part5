@@ -18,9 +18,14 @@ describe('<BlogForm />', () => {
     'id': '5fdfa172d66ab82360a7730f'
   }
 
+  let testedLikes = 0
+  let testLike = () => {
+    testedLikes++
+  }
+
   beforeEach(() => {
     component = render(
-      <Blog blog={blog} updateBlog={() => {}} deleteBlog={() => {}} canDelete={false} />
+      <Blog blog={blog} updateBlog={testLike} deleteBlog={() => {}} canDelete={false} />
     )
   })
 
@@ -36,7 +41,7 @@ describe('<BlogForm />', () => {
     expect(likes).toBeNull()
   })
 
-  test('Renders the blog\'s title and author, but does not render its url or number of likes by default ', async () => {
+  test('Renders the blog\'s title, author, url and number of likes when details button is clicked ', async () => {
     const detailsButton = component.container.querySelector('.detailsButton')
     fireEvent.click(detailsButton)
 
@@ -49,5 +54,16 @@ describe('<BlogForm />', () => {
     expect(url).toBeInTheDocument()
     const likes = component.container.querySelector('.likes')
     expect(likes).toBeInTheDocument()
+  })
+
+  test('updateBlog props should be called twice if the like button is clicked twice', async () => {
+    const detailsButton = component.container.querySelector('.detailsButton')
+    fireEvent.click(detailsButton)
+
+    const likeButton = component.container.querySelector('.likeButton')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(testedLikes).toBe(2)
   })
 })
