@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import Blog from './Blog'
 
-describe('<BlogForm />', () => {
+describe('<Blog />', () => {
   let component
   const blog = {
     'likes': 6,
@@ -18,14 +18,11 @@ describe('<BlogForm />', () => {
     'id': '5fdfa172d66ab82360a7730f'
   }
 
-  let testedLikes = 0
-  let testLike = () => {
-    testedLikes++
-  }
+  const updateBlog = jest.fn()
 
   beforeEach(() => {
     component = render(
-      <Blog blog={blog} updateBlog={testLike} deleteBlog={() => {}} canDelete={false} />
+      <Blog blog={blog} updateBlog={updateBlog} deleteBlog={() => {}} canDelete={false} />
     )
   })
 
@@ -64,6 +61,6 @@ describe('<BlogForm />', () => {
     fireEvent.click(likeButton)
     fireEvent.click(likeButton)
 
-    expect(testedLikes).toBe(2)
+    expect(updateBlog.mock.calls).toHaveLength(2)
   })
 })
