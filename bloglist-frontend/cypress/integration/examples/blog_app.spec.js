@@ -58,7 +58,7 @@ describe('Blog app', function() {
       cy.contains('Author1')
     })
 
-    describe('and several blogs exist', function () {
+    describe.only('and several blogs exist', function () {
       beforeEach(function () {
         cy.createBlog({ title: 'Blog1', author: 'Author1', url: 'url1.com'})
         cy.createBlog({ title: 'Blog2', author: 'Author2', url: 'url2.com'})
@@ -75,7 +75,24 @@ describe('Blog app', function() {
           .parent()
           .parent()
           .contains('like')
-          .click().click()
+          .click()
+  
+        cy.contains('Blog1').get('.likes').should('contain', '1')
+      })
+
+      it.only('one of those can be removed', function () {
+        cy.contains('Blog1')
+          .parent()
+          .contains('view')
+          .click()
+  
+        cy.contains('Blog1')
+          .parent()
+          .parent()
+          .contains('remove')
+          .click()
+  
+        cy.should('not.contain', 'Blog1')
       })
     })
   })
