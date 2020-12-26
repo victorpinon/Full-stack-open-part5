@@ -38,7 +38,7 @@ describe('Blog app', function() {
     })
   })
 
-  describe.only('When logged in', function() {
+  describe('When logged in', function() {
     beforeEach(function() {
       cy.login({ username: 'user1', password: 'pswd' })
     })
@@ -56,6 +56,27 @@ describe('Blog app', function() {
         .and('have.css', 'color', 'rgb(0, 128, 0)')
       cy.contains('Blog1')
       cy.contains('Author1')
+    })
+
+    describe('and several blogs exist', function () {
+      beforeEach(function () {
+        cy.createBlog({ title: 'Blog1', author: 'Author1', url: 'url1.com'})
+        cy.createBlog({ title: 'Blog2', author: 'Author2', url: 'url2.com'})
+        cy.createBlog({ title: 'Blog3', author: 'Author3', url: 'url3.com'})
+      })
+  
+      it('one of those can be liked', function () {
+        cy.contains('Blog1')
+          .parent()
+          .contains('view')
+          .click()
+  
+        cy.contains('Blog1')
+          .parent()
+          .parent()
+          .contains('like')
+          .click().click()
+      })
     })
   })
 })
