@@ -6,7 +6,7 @@ describe('Blog app', function() {
       username: 'user1',
       password: 'pswd'
     }
-    cy.request('POST', 'http://localhost:3001/api/users/', user) 
+    cy.request('POST', 'http://localhost:3001/api/users/', user)
     cy.visit('http://localhost:3000')
   })
 
@@ -49,7 +49,6 @@ describe('Blog app', function() {
       cy.get('#author').type('Author1')
       cy.get('#url').type('url1.com')
       cy.get('#create-button').click()
-      
 
       cy.get('.success')
         .should('contain', 'A new blog Blog1 by Author1 added')
@@ -60,23 +59,23 @@ describe('Blog app', function() {
 
     describe('and several blogs exist', function () {
       beforeEach(function () {
-        cy.createBlog({ title: 'Blog1', author: 'Author1', url: 'url1.com'})
-        cy.createBlog({ title: 'Blog2', author: 'Author2', url: 'url2.com'})
-        cy.createBlog({ title: 'Blog3', author: 'Author3', url: 'url3.com'})
+        cy.createBlog({ title: 'Blog1', author: 'Author1', url: 'url1.com' })
+        cy.createBlog({ title: 'Blog2', author: 'Author2', url: 'url2.com' })
+        cy.createBlog({ title: 'Blog3', author: 'Author3', url: 'url3.com' })
       })
-  
+
       it('one of those can be liked', function () {
         cy.contains('Blog1')
           .parent()
           .contains('view')
           .click()
-  
+
         cy.contains('Blog1')
           .parent()
           .parent()
           .contains('like')
           .click()
-  
+
         cy.contains('Blog1').get('.likes').should('contain', '1')
       })
 
@@ -85,13 +84,13 @@ describe('Blog app', function() {
           .parent()
           .contains('view')
           .click()
-  
+
         cy.contains('Blog1')
           .parent()
           .parent()
           .contains('remove')
           .click()
-  
+
         cy.should('not.contain', 'Blog1')
       })
 
@@ -99,11 +98,11 @@ describe('Blog app', function() {
         cy.contains('Blog1').parent().contains('view').click()
         cy.contains('Blog2').parent().contains('view').click()
         cy.contains('Blog3').parent().contains('view').click()
-  
+
         cy.contains('Blog2').parent().parent().contains('like').click()
         cy.contains('Blog3').parent().parent().contains('like').click()
         cy.contains('Blog2').parent().parent().contains('like').click()
-  
+
         cy.get('.blog').find('.title').then(titles => {
           const titlesText = titles.toArray().map(t => t.textContent)
           expect(titlesText).to.deep.equal(['Blog2', 'Blog3', 'Blog1'])
