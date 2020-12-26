@@ -52,7 +52,7 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
-      showNotificationMessage('wrong username or password', 'error')
+      showNotificationMessage('wrong credentials', 'error')
     }
   }
 
