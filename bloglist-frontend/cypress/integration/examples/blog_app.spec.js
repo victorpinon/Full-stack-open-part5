@@ -58,7 +58,7 @@ describe('Blog app', function() {
       cy.contains('Author1')
     })
 
-    describe.only('and several blogs exist', function () {
+    describe('and several blogs exist', function () {
       beforeEach(function () {
         cy.createBlog({ title: 'Blog1', author: 'Author1', url: 'url1.com'})
         cy.createBlog({ title: 'Blog2', author: 'Author2', url: 'url2.com'})
@@ -80,7 +80,7 @@ describe('Blog app', function() {
         cy.contains('Blog1').get('.likes').should('contain', '1')
       })
 
-      it.only('one of those can be removed', function () {
+      it('one of those can be removed', function () {
         cy.contains('Blog1')
           .parent()
           .contains('view')
@@ -93,6 +93,21 @@ describe('Blog app', function() {
           .click()
   
         cy.should('not.contain', 'Blog1')
+      })
+
+      it('they are ordered by likes', function () {
+        cy.contains('Blog1').parent().contains('view').click()
+        cy.contains('Blog2').parent().contains('view').click()
+        cy.contains('Blog3').parent().contains('view').click()
+  
+        cy.contains('Blog2').parent().parent().contains('like').click()
+        cy.contains('Blog3').parent().parent().contains('like').click()
+        cy.contains('Blog2').parent().parent().contains('like').click()
+  
+        cy.get('.blog').find('.title').then(titles => {
+          const titlesText = titles.toArray().map(t => t.textContent)
+          expect(titlesText).to.deep.equal(['Blog2', 'Blog3', 'Blog1'])
+        })
       })
     })
   })
